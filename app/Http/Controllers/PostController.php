@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function delete(Post $post)
+    {
+        if (auth()->user()->cannot('delete', $post)) {
+            return 'you cannot do that';
+        }
+        $post->delete();
+        return redirect('/profile/' . auth()->user()->username)->with('success', 'Successfully deleted the Post');
+    }
     public function viewSinglePost(Post $post) //type hinting
     {
         //overwriting the body value
